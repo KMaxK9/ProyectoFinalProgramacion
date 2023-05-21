@@ -4,15 +4,17 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+import entities.Player;
+
 public class StartMenu extends JPanel{
 
-	public StartMenu(Window w) {
+	public StartMenu(Player player, Window w) {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
@@ -24,7 +26,7 @@ public class StartMenu extends JPanel{
 		btnContinue.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				w.changeScreen(MapMenu.class);
+				w.changeScreen(player, MapMenu.class);
 				// load txt
 			} // mouse
 		});
@@ -40,7 +42,7 @@ public class StartMenu extends JPanel{
 		btnNewGame.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				w.changeScreen(MapMenu.class);
+				w.changeScreen(player, MapMenu.class);
 				// create txt
 			} // mouse
 		});

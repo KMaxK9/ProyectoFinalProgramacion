@@ -10,8 +10,10 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import entities.Player;
+
 public class MapMenu extends JPanel {
-	public MapMenu(Window w) {
+	public MapMenu(Player player, Window w) {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0};
@@ -50,7 +52,7 @@ public class MapMenu extends JPanel {
 		btnHillLand.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				w.changeScreen(HillLandMenu.class);
+				w.changeScreen(player, HillLandMenu.class);
 			} // mouse
 		});
 		btnHillLand.setForeground(new Color(0, 255, 0));

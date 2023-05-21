@@ -8,8 +8,10 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import entities.Player;
+
 public class LevelMenu extends JPanel {
-	public LevelMenu(Window w) {
+	public LevelMenu(Player player, Window w) {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0};

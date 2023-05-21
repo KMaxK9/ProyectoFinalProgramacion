@@ -1,16 +1,25 @@
 package interfaces;
 
 import javax.swing.JPanel;
+
+import entities.Enemy;
+import entities.Entity;
+import entities.Player;
+import exceptions.EntityNotExistsExpection;
+import maps.MapLevel;
+
 import java.awt.GridBagLayout;
 import javax.swing.JButton;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class HillLandMenu extends JPanel {
 	
-	public HillLandMenu(Window w) {
+	public HillLandMenu(Player player, Window w) {
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0};
@@ -23,7 +32,21 @@ public class HillLandMenu extends JPanel {
 		btnLevel1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				w.changeScreen(LevelMenu.class);
+				w.changeScreen(player, LevelMenu.class);
+				try {
+					ArrayList<Enemy> enemiesOne = new ArrayList<Enemy>();
+					Entity slime = new Enemy("Slime", null);
+					Entity wolf = new Enemy("Wolf", null);
+					enemiesOne.add((Enemy) slime);
+					enemiesOne.add((Enemy) wolf);
+					enemiesOne.add((Enemy) wolf);
+					MapLevel levelOne = new MapLevel(enemiesOne);
+					player.battle(enemiesOne);
+				} catch (SQLException | EntityNotExistsExpection e1) {
+					e1.printStackTrace();
+				} // try
+				
+				
 			} // mouse
 		});
 		GridBagConstraints gbc_btnLevel1 = new GridBagConstraints();
@@ -31,6 +54,7 @@ public class HillLandMenu extends JPanel {
 		gbc_btnLevel1.gridx = 1;
 		gbc_btnLevel1.gridy = 1;
 		add(btnLevel1, gbc_btnLevel1);
-	}
+	} // constructor
+	
 
 } // class
