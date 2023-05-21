@@ -1,6 +1,10 @@
 package entities;
 
+import java.sql.SQLException;
+import java.util.LinkedHashMap;
+
 import enums.Species;
+import exceptions.EntityNotExistsExpection;
 import inventories.Inventory;
 import items.HandItem;
 import items.artifacts.Bracelet;
@@ -12,6 +16,7 @@ import items.wears.Boots;
 import items.wears.Chestplate;
 import items.wears.Helmet;
 import items.wears.Pants;
+import utils.DAO;
 
 public class Player extends Entity {
 
@@ -119,13 +124,31 @@ public class Player extends Entity {
 	
 	// Constructors.
 	
-	public Player(String name, Species species, boolean gender, Inventory inventory) {
-		super(name, species);
+	public Player(String name, boolean gender, Inventory inventory) throws SQLException, EntityNotExistsExpection {
+		super(name);
 		this.gender = gender;
 		this.inventory = inventory;
 		this.coins = 0;
-	}
+	} // constructor
 	
+	public Player(String name, Species species, boolean gender) throws SQLException, EntityNotExistsExpection {
+		super(name, species);
+		this.gender = gender;
+		
+		LinkedHashMap<String, Object> campos = new LinkedHashMap<String, Object>();
+		campos.put("name", name);
+		campos.put("species", species.toString());
+		campos.put("levels", 1);
+		campos.put("life", 50);
+		campos.put("damage", 5);
+		campos.put("defense", 5);
+		DAO.insert("entity", campos);
+
+	} // constructorDB Insert
+	
+	public Player sendPlayer() {
+		return null;
+	}
 
 	
 	

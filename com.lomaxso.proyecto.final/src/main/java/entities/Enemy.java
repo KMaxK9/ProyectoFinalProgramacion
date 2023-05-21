@@ -1,8 +1,10 @@
 package entities;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import enums.Species;
+import exceptions.EntityNotExistsExpection;
 import items.Item;
 
 public class Enemy extends Entity {
@@ -21,10 +23,11 @@ public class Enemy extends Entity {
 
 	// Constructor.
 	
-	public Enemy(String name, Species species, ArrayList<Item> loot) {
-		super(name, species);
+	public Enemy(String name, ArrayList<Item> loot) throws SQLException, EntityNotExistsExpection {
+		super(name);
 		this.loot = loot;
 	}
+	
 	
 
 	
