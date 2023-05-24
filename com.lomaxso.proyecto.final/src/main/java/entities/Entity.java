@@ -63,6 +63,9 @@ public abstract class Entity extends ThingsWithName {
 
 	// Constructors.
 
+	public Entity() {
+	}
+
 	public Entity(String name, Species species) {
 		super(name);
 		this.species = species;
@@ -95,73 +98,76 @@ public abstract class Entity extends ThingsWithName {
 		} // if / else
 	} // contructorDB
 
-	public Entity fight(Enemy rival) {
-		Short rivalLife = rival.getLife();
-		rival.setLife(rivalLife);
-		while (this.life > 0 && rivalLife > 0) {
-			Short defensa = rival.defend();
-			Short ataque = this.attack();
-			Entity.espera((short) 750);
-			rivalLife = rival.receiveDamage((short) (ataque - defensa), rivalLife);
-			Entity.espera((short) 750);
-			if (rivalLife > 0) {
-				ataque = rival.attack();
-				defensa = this.defend();
-				Entity.espera((short) 750);
-				this.receiveDamage((short) (ataque - defensa), this.life);
-			} // if
-		} // while
-		return (this.life > 0 ? this : rival);
-	} // fight
+	public void enemysLife() throws SQLException, EntityNotExistsExpection {
+		LinkedHashSet<String> fields = new LinkedHashSet<String>();
+		LinkedHashMap<String, Object> restricciones = new LinkedHashMap<String, Object>();
+		fields.add("name");
+		fields.add("life");
+		restricciones.put("name", getName());
+		ArrayList<Object> entity = DAO.consult("entity", fields, restricciones);
+		if (entity.size() > 0) {
+			this.life = Short.parseShort(entity.get(1) + "");
+		} else {
+			throw new EntityNotExistsExpection("");
+		} // if / else
+	} // enemy
 
-	public void battle(ArrayList<Enemy> enemies) {
-		for (byte i = 0; i < enemies.size(); i++) {
-			Entity ganador = this.fight(enemies.get(i));
-			System.out.println("Ha ganado: " + ganador);
-		} // for
-	} // battle
-
-	public Short attack() {
-		Short ataqueHecho = this.getDamage();
-		System.out.println(this.getName() + " ataca y hace " + ataqueHecho + " de daño.");
-		return ataqueHecho;
+	public Short attack(Entity rival, Short lastDefense) {
+		Random r = new Random();
+		Short damage = (short) r.nextDouble(this.getDamage() * 0.7, this.getDamage() * 1.3);
+		rival.receiveDamage((short) (damage - lastDefense));
+		System.out.println("Daño original: " + damage + ", ultima defensa: " + lastDefense);
+		return damage;
 	} // attack
 
-	public Short receiveDamage(Short receivedDamage, Short receivedLife) {
-		Short entityLife = receivedLife;
-		
-		if (receivedDamage >= 0) {
-			if (this.getClass().equals(Player.class)) {
-				this.life = (short) (this.life - receivedDamage);
-				if (this.life < 0) {
-					this.life = 0;
-				} // if
-		} else {
-			entityLife = (short) (entityLife - receivedDamage);
-			if (entityLife < 0) {
-				entityLife = 0;
+	public Short blockAttack() {
+		Random r = new Random();
+		Short defense;
+		if (r.nextInt(0, 7) > 0) {
+			defense = (short) (this.getDefense() + (r.nextInt(0, this.getDefense() / 2)));
+			System.out.println(this.getName() + " se prepara para el ataque con " + defense);
+		} else { // chance to doble the defense when blocking.
+			defense = (short) (this.getDefense() * 2);
+			System.out.println(this.getName() + " se prepara para el ataque con " + defense);
+		} // if
+		return defense;
+	} // blockAttack
+
+	public Short receiveDamage(Short incomingDamage) {
+
+		if (incomingDamage >= 0) {
+			this.life = (short) (this.life - incomingDamage);
+			if (this.life < 0) {
+				this.life = 0;
 			} // if
-		} // if / else
-			
-			System.out.println(this.getName() + " recibe " + receivedDamage + " puntos de daño, y le quedan " + entityLife
-					+ " puntos de vida.");
 		} // if (damage > 0)
-		return entityLife;
+		System.out.println(this.getName() + " recibe " + incomingDamage + " puntos de daño, y le quedan " + this.life
+				+ " puntos de vida.");
+		return this.life;
 	} // receiveDamage
 
-	public Short defend() {
-		Short dañoBloqueado = this.getDefense();
-		System.out.println(this.getName() + " defiende con " + dañoBloqueado + " puntos de defensa.");
-		return dañoBloqueado;
-	} // defend
+	public Short enemyAction(Entity rival, Short lastDefense) {
+		Random r = new Random();
 
-	private static void espera(short ms) {
-		try {
-			Thread.sleep(ms);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+		if (r.nextInt(0, 3) > 0) {
+			System.out.println("Enemigo elige pegar");
+			this.attack(rival, lastDefense);
+			return this.getDefense();
+		} else {
+			System.out.println("Enemigo elige defender");
+			return this.blockAttack();
+		} // if / else
+	} // enemyAction
+
+	public Short playerAction(boolean option, Enemy rival, Short lastDefense) {
+		if (option) { // option (true = attack)
+			System.out.println("Jugador elige pegar");
+			this.attack(rival, lastDefense);
+			return this.getDefense();
+		} else { // false (defend).
+			System.out.println("Jugador elige defender");
+			return this.blockAttack();
+		} // if / else
+	} // playerAction
 
 } // class

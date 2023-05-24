@@ -10,23 +10,21 @@ import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import entities.Player;
+public class StartMenu extends JPanel {
 
-public class StartMenu extends JPanel{
-
-	public StartMenu(Player player, Window w) {
+	public StartMenu(Window w) {
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.columnWidths = new int[] { 0, 0, 0, 0 };
+		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0, 0 };
+		gridBagLayout.columnWeights = new double[] { 1.0, 0.0, 1.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		setLayout(gridBagLayout);
-		
+
 		JButton btnContinue = new JButton("Continue");
 		btnContinue.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				w.changeScreen(player, MapMenu.class);
+				w.changeScreen(MapMenu.class);
 				// load txt
 			} // mouse
 		});
@@ -37,12 +35,12 @@ public class StartMenu extends JPanel{
 		gbc_btnContinue.gridx = 1;
 		gbc_btnContinue.gridy = 1;
 		add(btnContinue, gbc_btnContinue);
-		
+
 		JButton btnNewGame = new JButton("New Game");
 		btnNewGame.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				w.changeScreen(player, MapMenu.class);
+				w.changeScreen(MapMenu.class);
 				// create txt
 			} // mouse
 		});
@@ -53,7 +51,7 @@ public class StartMenu extends JPanel{
 		gbc_btnNewGame.gridx = 1;
 		gbc_btnNewGame.gridy = 2;
 		add(btnNewGame, gbc_btnNewGame);
-		
+
 		JButton btnOptions = new JButton("Options");
 		btnOptions.setFont(new Font("ROG Fonts", Font.PLAIN, 11));
 		GridBagConstraints gbc_btnOptions = new GridBagConstraints();

@@ -16,14 +16,12 @@ public class Main {
 
 		try {
 			Entity player = new Player("Robert", Species.HUMAN, false);
-			
+			Map map = new Map();
 			Window w = new Window((Player) player);
+			
 		} catch (SQLException | EntityNotExistsExpection e) {
 			e.printStackTrace();
 		} // try
-	 
-		Map map = new Map();
 
 	} // main
-
 } // class

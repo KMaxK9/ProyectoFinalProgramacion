@@ -28,7 +28,7 @@ public class Enemy extends Entity {
 		this.loot = loot;
 	}
 	
-	
+	public Enemy() {}
 
 	
 } // class

@@ -1,11 +1,11 @@
 package main;
 
-public class ThingsWithName {
+public abstract class ThingsWithName {
 
 	private String name;
 
 	// Getters and Setters.
-	
+
 	public String getName() {
 		return name;
 	}
@@ -15,12 +15,12 @@ public class ThingsWithName {
 	}
 
 	// Constructors.
-	
 	public ThingsWithName(String name) {
 		super();
 		this.name = name;
 	}
-	
-	
-	
+
+	public ThingsWithName() {
+	}
+
 } // class
